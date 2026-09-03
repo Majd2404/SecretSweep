@@ -1,0 +1,14 @@
+# Ruby
+*.gem
+.bundle/
+pkg/
+.yardoc/
+coverage/
+
+# General
+.DS_Store
+*.log
+.env
+
+# Secrets ignore file — commit the .example, not a real one
+.secretsweepignore
