@@ -1,0 +1,9 @@
+module SecretSweep
+  module Reporter
+    def self.render: (Array[Finding] findings, ?format: Symbol) -> String
+
+    def self.render_text: (Array[Finding] findings) -> String
+
+    def self.render_json: (Array[Finding] findings) -> String
+  end
+end

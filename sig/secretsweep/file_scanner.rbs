@@ -1,0 +1,22 @@
+module SecretSweep
+  class FileScanner
+    SKIP_DIRS: Array[String]
+    MAX_FILE_SIZE: Integer
+
+    def initialize: (String root, ?ignore_list: IgnoreList) -> void
+
+    def scan: () -> Array[Finding]
+
+    private
+
+    def each_scannable_file: () { (String path) -> void } -> void
+
+    def scan_file: (String path, String relative_path) -> Array[Finding]
+
+    def check_high_entropy_tokens: (String line, String relative_path, Integer line_number, Array[Finding] findings) -> void
+
+    def relative: (String path) -> String
+
+    def binary?: (String path) -> bool
+  end
+end

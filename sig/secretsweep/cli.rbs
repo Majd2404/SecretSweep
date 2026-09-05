@@ -1,0 +1,15 @@
+module SecretSweep
+  class CLI
+    EXIT_CLEAN: Integer
+    EXIT_SECRETS_FOUND: Integer
+    EXIT_ERROR: Integer
+
+    def self.start: (Array[String] argv) -> Integer
+
+    def run: (Array[String] argv) -> Integer
+
+    private
+
+    def parse: (Array[String] argv) -> Hash[Symbol, untyped]
+  end
+end

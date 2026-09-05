@@ -1,0 +1,13 @@
+module SecretSweep
+  class IgnoreList
+    def self.load: (String? path) -> IgnoreList
+
+    def initialize: (Array[String] path_globs, Array[String] fingerprints) -> void
+
+    def path_ignored?: (String path) -> bool
+
+    def finding_ignored?: (Finding finding) -> bool
+
+    def reject_ignored: (Array[Finding] findings) -> Array[Finding]
+  end
+end

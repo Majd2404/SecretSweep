@@ -1,0 +1,9 @@
+module SecretSweep
+  module Entropy
+    DEFAULT_THRESHOLD: Float
+
+    def self.shannon: (String? str) -> Float
+
+    def self.high_entropy?: (String? str, ?threshold: Float, ?min_length: Integer) -> bool
+  end
+end

@@ -1,0 +1,10 @@
+module SecretSweep
+  module PatternRegistry
+    type match = { type: String, snippet: String }
+
+    PATTERNS: Hash[String, Regexp]
+    PLACEHOLDER_HINTS: Regexp
+
+    def self.scan_line: (String line) -> Array[match]
+  end
+end

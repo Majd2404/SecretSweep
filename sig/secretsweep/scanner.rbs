@@ -1,0 +1,13 @@
+module SecretSweep
+  class Scanner
+    def initialize: (String path, ?ignore_file: String?, ?include_history: bool) -> void
+
+    def run: () -> Array[Finding]
+
+    private
+
+    def default_ignore_path: () -> String?
+
+    def dedupe: (Array[Finding] findings) -> Array[Finding]
+  end
+end

@@ -1,0 +1,17 @@
+module SecretSweep
+  class Finding
+    attr_reader source: String
+    attr_reader line_number: Integer?
+    attr_reader type: String
+    attr_reader snippet: String
+    attr_reader commit: String?
+
+    def initialize: (String source, Integer? line_number, String type, String snippet, String? commit) -> void
+
+    def fingerprint: () -> String
+
+    def redacted_snippet: () -> String
+
+    def to_h: () -> Hash[Symbol, untyped]
+  end
+end

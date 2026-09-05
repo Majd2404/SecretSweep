@@ -1,0 +1,16 @@
+module SecretSweep
+  class GitHistoryScanner
+    class NotAGitRepoError < StandardError
+    end
+
+    def initialize: (String repo_path, ?ignore_list: IgnoreList) -> void
+
+    def scan: () -> Array[Finding]
+
+    private
+
+    def git_repo?: () -> bool
+
+    def each_diff_line: () { (String line) -> void } -> void
+  end
+end
