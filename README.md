@@ -35,7 +35,7 @@ rather than "fixed."
 ## Installation
 
 ```bash
-git clone https://github.com/yourusername/SecretSweep.git
+git clone https://github.com/Majd2404/SecretSweep.git
 cd SecretSweep
 bundle install
 gem build secretsweep.gemspec

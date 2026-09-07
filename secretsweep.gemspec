@@ -13,7 +13,7 @@ Gem::Specification.new do |spec|
     of known-format regex patterns and Shannon entropy analysis for
     unknown formats. Pure Ruby standard library, zero runtime dependencies.
   DESC
-  spec.homepage = "https://github.com/yourusername/SecretSweep"
+  spec.homepage = "https://github.com/Majd2404/SecretSweep"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.0"
 
