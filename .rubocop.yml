@@ -1,8 +1,28 @@
 AllCops:
-  TargetRubyVersion: 3.1
+  TargetRubyVersion: 3.0
+  NewCops: enable
+  SuggestExtensions: false
 
 Style/StringLiterals:
   EnforcedStyle: double_quotes
 
 Style/StringLiteralsInInterpolation:
   EnforcedStyle: double_quotes
+
+# RSpec describe/context blocks naturally run long as coverage grows.
+Metrics/BlockLength:
+  Exclude:
+    - "spec/**/*.rb"
+    - "secretsweep.gemspec"
+
+# Fixture files contain intentionally trivial, throwaway code used only
+# to test the scanner's detection logic.
+Naming/MethodParameterName:
+  Exclude:
+    - "spec/fixtures/**/*.rb"
+
+# build_option_parser is a flat OptionParser DSL declaration — splitting
+# it further would fragment a cohesive config block.
+Metrics/MethodLength:
+  Exclude:
+    - "lib/secretsweep/cli.rb"
