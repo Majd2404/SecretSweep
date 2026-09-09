@@ -18,28 +18,33 @@ module SecretSweep
 
     def run(argv)
       options = parse(argv)
-      path = options[:path] || "."
-
-      scanner = Scanner.new(path, ignore_file: options[:ignore_file], include_history: options[:history])
-      findings = scanner.run
+      findings = scan(options)
 
       puts Reporter.render(findings, format: options[:format])
-
       findings.empty? ? EXIT_CLEAN : EXIT_SECRETS_FOUND
-    rescue GitHistoryScanner::NotAGitRepoError => e
-      warn "Error: #{e.message}"
-      EXIT_ERROR
-    rescue Errno::ENOENT => e
+    rescue GitHistoryScanner::NotAGitRepoError, Errno::ENOENT => e
       warn "Error: #{e.message}"
       EXIT_ERROR
     end
 
     private
 
+    def scan(options)
+      path = options[:path] || "."
+      Scanner.new(path, ignore_file: options[:ignore_file], include_history: options[:history]).run
+    end
+
     def parse(argv)
       options = { format: :text, history: false }
+      parser = build_option_parser(options)
 
-      parser = OptionParser.new do |opts|
+      remaining = parser.parse(argv)
+      options[:path] = remaining.first
+      options
+    end
+
+    def build_option_parser(options)
+      OptionParser.new do |opts|
         opts.banner = "Usage: secretsweep [path] [options]"
 
         opts.on("--history", "Also scan full git history, not just the working tree") do
@@ -64,10 +69,6 @@ module SecretSweep
           exit(0)
         end
       end
-
-      remaining = parser.parse(argv)
-      options[:path] = remaining.first
-      options
     end
   end
 end

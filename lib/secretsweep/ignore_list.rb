@@ -13,22 +13,24 @@ module SecretSweep
     def self.load(path)
       return new([], []) unless path && File.exist?(path)
 
+      globs, fingerprints = partition_lines(File.readlines(path))
+      new(globs, fingerprints)
+    end
+
+    def self.partition_lines(raw_lines)
       globs = []
       fingerprints = []
 
-      File.readlines(path).each do |raw_line|
+      raw_lines.each do |raw_line|
         line = raw_line.strip
         next if line.empty? || line.start_with?("#")
 
-        if line.match?(/\A[0-9a-f]{12}\z/)
-          fingerprints << line
-        else
-          globs << line
-        end
+        line.match?(/\A[0-9a-f]{12}\z/) ? fingerprints << line : globs << line
       end
 
-      new(globs, fingerprints)
+      [globs, fingerprints]
     end
+    private_class_method :partition_lines
 
     def initialize(path_globs, fingerprints)
       @path_globs = path_globs

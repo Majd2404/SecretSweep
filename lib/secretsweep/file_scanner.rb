@@ -50,17 +50,7 @@ module SecretSweep
       findings = []
 
       File.foreach(path).with_index(1) do |line, line_number|
-        # Guard per-line, not per-file: one malformed line (bad encoding,
-        # unexpected control characters) should never discard matches
-        # already found earlier in the same file.
-        begin
-          PatternRegistry.scan_line(line).each do |match|
-            findings << Finding.new(relative_path, line_number, match[:type], match[:snippet], nil)
-          end
-          check_high_entropy_tokens(line, relative_path, line_number, findings)
-        rescue ArgumentError, Encoding::InvalidByteSequenceError
-          next
-        end
+        findings.concat(scan_line_safely(line, relative_path, line_number))
       end
 
       findings
@@ -70,13 +60,26 @@ module SecretSweep
       findings
     end
 
+    # Guards per-line, not per-file: one malformed line (bad encoding,
+    # unexpected control characters) should never discard matches already
+    # found earlier in the same file.
+    def scan_line_safely(line, relative_path, line_number)
+      findings = PatternRegistry.scan_line(line).map do |match|
+        Finding.new(relative_path, line_number, match[:type], match[:snippet], nil)
+      end
+      check_high_entropy_tokens(line, relative_path, line_number, findings)
+      findings
+    rescue ArgumentError, Encoding::InvalidByteSequenceError
+      []
+    end
+
     # Beyond known patterns, flag bare high-entropy tokens assigned to a
     # variable — catches secrets in formats we don't have a specific regex
     # for yet (a new provider's token format, an internal auth token).
     def check_high_entropy_tokens(line, relative_path, line_number, findings)
       return unless line.match?(/=|:/)
 
-      line.scan(/['"]([A-Za-z0-9\/+_-]{20,})['"]/) do |match|
+      line.scan(%r{['"]([A-Za-z0-9/+_-]{20,})['"]}) do |match|
         token = match[0]
         next unless Entropy.high_entropy?(token)
 
