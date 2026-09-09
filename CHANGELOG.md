@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.1.2] - 2026-09-09
+
+### Added
+
+- GitHub Actions CI workflow (`.github/workflows/ci.yml`) running RSpec, Rubocop, and RBS signature validation on every push and pull request, across Ruby 3.0–3.3.
+- `metadata` in the gemspec (`homepage_uri`, `source_code_uri`, `changelog_uri`, `bug_tracker_uri`) for better discoverability on RubyGems.org.
+
+### Fixed
+
+- Gemspec development dependencies corrected: `rspec` and `rbs` replace the stale `minitest` reference left over from the pre-migration scaffold.
+- `sig/**/*.rbs` and `CHANGELOG.md` are now actually included in the packaged gem — previous versions omitted the type signatures entirely despite them existing in the repo.
+
+## [0.1.1] - 2026-09-07
+
+### Fixed
+
+- Corrected the homepage/source code URL in `secretsweep.gemspec` to point to the actual GitHub repository.
+
 ## [0.1.0] - 2026-09-05
 
 ### Added
