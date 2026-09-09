@@ -13,3 +13,4 @@ coverage/
 # Secrets ignore file — commit the .example, not a real one
 .secretsweepignore
 spec/examples.txt
+Gemfile.lock
