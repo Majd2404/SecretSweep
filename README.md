@@ -2,9 +2,10 @@
 
 **A dependency-free Ruby CLI that scans files and full git history for leaked secrets — API keys, tokens, private keys — using known-format patterns plus entropy analysis for everything else.**
 
+![CI](https://github.com/Majd2404/SecretSweep/actions/workflows/ci.yml/badge.svg)
+![Gem Version](https://badge.fury.io/rb/secretsweep.svg)
 ![Ruby](https://img.shields.io/badge/Ruby-3.0%2B-CC342D?logo=ruby&logoColor=white)
 ![Dependencies](https://img.shields.io/badge/runtime_deps-zero-brightgreen)
-![Tests](https://img.shields.io/badge/tests-36_passing-brightgreen)
 ![License](https://img.shields.io/badge/license-MIT-blue)
 
 ## Why this exists
@@ -34,12 +35,20 @@ rather than "fixed."
 
 ## Installation
 
+SecretSweep is published on RubyGems:
+
+```bash
+gem install secretsweep
+```
+
+Or from source:
+
 ```bash
 git clone https://github.com/Majd2404/SecretSweep.git
 cd SecretSweep
 bundle install
 gem build secretsweep.gemspec
-gem install ./secretsweep-0.1.0.gem
+gem install ./secretsweep-*.gem
 ```
 
 ## Usage
@@ -84,7 +93,7 @@ directory you're scanning. Two kinds of entries:
 
 ```
 # Skip scanning these paths entirely
-test/fixtures/**
+spec/fixtures/**
 
 # Allowlist ONE specific confirmed false positive by its fingerprint
 # (does NOT silence the whole rule — just that exact file+type+snippet)
@@ -120,12 +129,9 @@ a1b2c3d4e5f6
   GitHub token is both a recognized format *and* high-entropy). This is
   left as-is rather than deduplicated across types: two independent
   detectors agreeing is a legitimate confidence signal, and collapsing
-  it would hide which detector(s) actually fired. See
-  `docs/COMMIT_PLAN.md` for a possible future confidence-scoring
-  approach instead of outright deduplication.
-- **Entropy thresholds are heuristic**, not universally tuned — see
-  `docs/COMMIT_PLAN.md` Week 2 for the plan to validate them against a
-  larger real-world sample.
+  it would hide which detector(s) actually fired.
+- **Entropy thresholds are heuristic**, not yet validated against a
+  large real-world sample.
 - **History scanning reads the full diff of every commit on every
   branch** (`git log -p --all`) — this is thorough but can be slow on
   very large, long-lived repositories. No pagination/depth limit yet.
@@ -133,22 +139,27 @@ a1b2c3d4e5f6
 ## Testing
 
 ```bash
-rake test
+bundle exec rspec
 ```
 
-36 tests, zero dependencies beyond Ruby's bundled Minitest — no network
-access or external services required to run the suite. Includes a real
-integration test (`git_history_scanner_test.rb`) that creates an actual
-throwaway git repo, commits a secret, removes it in a later commit, and
-verifies `--history` still catches it.
+37 RSpec examples, including a real end-to-end test
+(`git_history_scanner_spec.rb`) that creates an actual throwaway git
+repo, commits a secret, removes it in a later commit, and verifies
+`--history` still catches it.
 
-## Roadmap
+Type signatures are validated separately:
 
-See [`docs/COMMIT_PLAN.md`](docs/COMMIT_PLAN.md) for the week-by-week build-out plan.
+```bash
+bundle exec rbs -I sig validate
+```
+
+Both run automatically on every push via GitHub Actions across Ruby
+3.0–3.3 — see the CI badge above.
 
 ## Tech stack
 
-Ruby 3.0+, standard library only. Minitest + Rake for testing.
+Ruby 3.0+, standard library only. RSpec for testing, RBS for type
+signatures, Rubocop for style, GitHub Actions for CI.
 
 ## License
 
