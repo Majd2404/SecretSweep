@@ -26,3 +26,14 @@ Naming/MethodParameterName:
 Metrics/MethodLength:
   Exclude:
     - "lib/secretsweep/cli.rb"
+
+# Deferred, not ignored: enabling this would make `gem push` fail until
+# MFA is set up on the RubyGems account. Revisit once that's in place.
+Gemspec/RequireMFA:
+  Enabled: false
+
+# bundle gem's own default scaffold puts development dependencies in the
+# gemspec — this remains the mainstream convention for gems, so this
+# newer, more opinionated suggestion is skipped here.
+Gemspec/DevelopmentDependencies:
+  Enabled: false

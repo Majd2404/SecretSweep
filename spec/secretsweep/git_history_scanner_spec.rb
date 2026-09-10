@@ -42,6 +42,6 @@ RSpec.describe SecretSweep::GitHistoryScanner do
 
   def run_git(dir, *args)
     _out, status = Open3.capture2("git", "-C", dir, *args)
-    raise "git command failed: #{args.join(' ')}" unless status.success?
+    raise "git command failed: #{args.join(" ")}" unless status.success?
   end
 end

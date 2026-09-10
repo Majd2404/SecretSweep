@@ -15,9 +15,7 @@ module SecretSweep
     def run
       findings = FileScanner.new(@path, ignore_list: @ignore_list).scan
 
-      if @include_history
-        findings.concat(GitHistoryScanner.new(@path, ignore_list: @ignore_list).scan)
-      end
+      findings.concat(GitHistoryScanner.new(@path, ignore_list: @ignore_list).scan) if @include_history
 
       dedupe(@ignore_list.reject_ignored(findings))
     end

@@ -8,7 +8,7 @@ module SecretSweep
   module PatternRegistry
     PATTERNS = {
       "aws_access_key_id" => /\bAKIA[0-9A-Z]{16}\b/,
-      "aws_secret_access_key" => /\baws(.{0,20})?(secret|access)[_-]?key\b.{0,5}['"]([A-Za-z0-9\/+=]{40})['"]/i,
+      "aws_secret_access_key" => %r{\baws(.{0,20})?(secret|access)[_-]?key\b.{0,5}['"]([A-Za-z0-9/+=]{40})['"]}i,
       "github_token" => /\bgh[pousr]_[A-Za-z0-9]{36,}\b/,
       "slack_token" => /\bxox[baprs]-[A-Za-z0-9-]{10,}\b/,
       "stripe_live_key" => /\bsk_live_[A-Za-z0-9]{24,}\b/,
@@ -16,7 +16,7 @@ module SecretSweep
       "generic_private_key" => /-----BEGIN (RSA |EC |OPENSSH |DSA |PGP )?PRIVATE KEY-----/,
       "google_api_key" => /\bAIza[0-9A-Za-z\-_]{35}\b/,
       "generic_api_key_assignment" =>
-        /\b(api[_-]?key|secret|token|password|passwd|pwd)\b\s*[:=]\s*['"][A-Za-z0-9\/+=_\-]{16,}['"]/i,
+        %r{\b(api[_-]?key|secret|token|password|passwd|pwd)\b\s*[:=]\s*['"][A-Za-z0-9/+=_-]{16,}['"]}i,
       "jwt" => /\bey[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\b/
     }.freeze
 
